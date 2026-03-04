@@ -1,5 +1,6 @@
 // Minimal NapCat Channel Implementation
-import { setNapCatConfig } from "./runtime.js";
+import { setNapCatConfig, getNapCatRuntime } from "./runtime.js";
+import { handleNapCatWebhook } from "./webhook.js";
 
 async function sendToNapCat(url: string, payload: any, token?: string) {
     const headers: Record<string, string> = { "Content-Type": "application/json" };
@@ -273,8 +274,34 @@ export const napcatPlugin = {
         },
     },
     gateway: {
-        startAccount: async () => {
+        startAccount: async (ctx: any) => {
              console.log("[NapCat] Plugin active. Listening on /napcat");
+             const runtime = getNapCatRuntime();
+             if (typeof runtime?.channel?.registerPluginHttpRoute === 'function') {
+                 const accountId = ctx?.account?.accountId || "default";
+                 const unregisterWebhook = runtime.channel.registerPluginHttpRoute({
+                     pluginId: "napcat",
+                     accountId,
+                     path: "/napcat",
+                     handler: async (req: any, res: any) => {
+                         await handleNapCatWebhook(req, res);
+                     },
+                 });
+                 const unregisterMedia = runtime.channel.registerPluginHttpRoute({
+                     pluginId: "napcat",
+                     accountId,
+                     path: "/napcat/media",
+                     handler: async (req: any, res: any) => {
+                         await handleNapCatWebhook(req, res);
+                     },
+                 });
+                 return {
+                     stop: () => {
+                         if (typeof unregisterWebhook === 'function') unregisterWebhook();
+                         if (typeof unregisterMedia === 'function') unregisterMedia();
+                     }
+                 };
+             }
              return { stop: () => {} };
         }
     }

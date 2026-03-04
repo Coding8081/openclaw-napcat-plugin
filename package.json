@@ -6,5 +6,11 @@
     "extensions": [
       "./index.ts"
     ]
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.18"
   }
 }

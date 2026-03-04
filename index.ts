@@ -12,7 +12,9 @@ const plugin = {
   register(api: OpenClawPluginApi) {
     setNapCatRuntime(api.runtime);
     api.registerChannel({ plugin: napcatPlugin as any });
-    api.registerHttpHandler(handleNapCatWebhook);
+    if (typeof (api as any).registerHttpHandler === 'function') {
+      api.registerHttpHandler(handleNapCatWebhook);
+    }
   },
 };
 
