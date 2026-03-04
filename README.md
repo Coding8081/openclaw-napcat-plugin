@@ -37,6 +37,7 @@ git clone https://github.com/ProperSAMA/openclaw-napcat-plugin.git
       "enabled": true,
       "agentId": "main",
       "url": "http://127.0.0.1:3000",
+      "accessToken": "",
       "allowUsers": [
         "123456789",
         "987654321"
@@ -65,6 +66,7 @@ git clone https://github.com/ProperSAMA/openclaw-napcat-plugin.git
 | 配置项 | 类型 | 说明 | 默认值 |
 |--------|------|------|--------|
 | `url` | string | NapCat HTTP 服务地址 | `http://127.0.0.1:3000` |
+| `accessToken` | string | 连接 NapCat HTTP/WebSocket 服务器的认证令牌（发送方式：`Authorization: Bearer <token>`） | `""` |
 | `agentId` | string | 可选，固定将 NapCat 会话绑定到该 OpenClaw agent（如 `main`、`ops`） | `""`（空=按默认路由） |
 | `allowUsers` | string[] | 允许接收消息的 QQ 用户 ID 列表 | `[]` (接收所有) |
 | `enableGroupMessages` | boolean | 是否处理群消息 | `false` |
