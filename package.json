@@ -6,5 +6,8 @@
     "extensions": [
       "./index.ts"
     ]
+  },
+  "devDependencies": {
+    "vitest": "^4.0.18"
   }
 }
